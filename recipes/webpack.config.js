@@ -1,7 +1,14 @@
+const DIRNAME_PARENT = getDirnameParent();
+function getDirnameParent() {
+    const split = __dirname.split('/');
+    split.pop();
+    return split.join('/');
+}
+
 module.exports = {
     entry: "./src/index.js",
     output: {
-        path: __dirname + "/dist/assets",
+        path: DIRNAME_PARENT + "/dist/assets",
         filename: "bundle.js"
     },
     devtool: '#source-map',
