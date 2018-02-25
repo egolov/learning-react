@@ -3,6 +3,8 @@ import { v4 } from 'uuid'
 import AddColorForm from './components/AddColorForm'
 import ColorList from './components/ColorList'
 import colors from './data/colors'
+import storeFactory from './redux/store'
+import {addColor} from "./redux/actions";
 
 /*
     Container component.
@@ -16,6 +18,7 @@ class App extends React.Component {
 
     constructor(props) {
         super(props);
+        this.store = storeFactory(true);
         this.state = {
             colors
         }
@@ -33,6 +36,7 @@ class App extends React.Component {
             }
         ];
         this.setState({ colors });
+        this.store.dispatch(addColor(title, color))
     };
 
     removeColor = (id) => {
@@ -53,6 +57,8 @@ class App extends React.Component {
     };
 
     render() {
+        const store = storeFactory(true);
+        console.log(store.getState());
         return (
             <div>
                 <AddColorForm onNewColor={this.addColor}/>
