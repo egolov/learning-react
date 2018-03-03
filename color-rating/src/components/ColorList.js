@@ -1,6 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import StarRating from './StarRating'
+import {rateColor, removeColor} from "../redux/actions";
 
 class Color extends React.Component {
 
@@ -30,11 +31,11 @@ class Color extends React.Component {
     }
 
     render() {
-        const { title, rating, color, onRate, onRemove } = this.props
+        const { id, title, rating, color, onRate, onRemove } = this.props
         return (
             <section className="color" style={this.style}>
                 <h1 ref="title">{title}</h1>
-                <button onClick={onRemove}>X</button>
+                <button onClick={() => onRemove(id)}>X</button>
                 <div className="color"
                      style={{ backgroundColor: color }}>
                     {title}
@@ -60,26 +61,28 @@ Color.defaultProps = {
     rating: 0,
     color: "#000000",
     onRate: f=>f
-}
+};
 
-const ColorList = ({ colors, onRemove, onRate }) =>
-    <div className="color-list">
-        {(colors.length === 0) ?
-            <p>No Colors Listed. (Add a Color)</p> :
-            colors.map(color => {
-                    return <Color key={color.id}
+const ColorList = ({ store }) => {
+    const {colors} = store.getState();
+    return (
+        <div className="color-list">
+            {(colors.length === 0) ?
+                <p>No Colors Listed. (Add a Color)</p> :
+                colors.map(color =>
+                    <Color key={color.id}
                            {...color}
-                           onRemove={() => onRemove(color.id)}
-                           onRate={(rating) => onRate(color.id, rating)}/>
-                }
-            )
-        }
-    </div>
+                           onRate={rating => store.dispatch(rateColor(color.id, rating))}
+                           onRemove={id => store.dispatch(removeColor(id))}
+                    />
+                )
+            }
+        </div>
+    );
+}
 
 ColorList.propTypes = {
-    colors: PropTypes.array.isRequired,
-    onRemove: PropTypes.func.isRequired,
-    onRate: PropTypes.func.isRequired
-}
+    store: PropTypes.object.isRequired
+};
 
 export default ColorList

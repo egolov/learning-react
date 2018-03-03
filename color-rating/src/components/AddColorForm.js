@@ -1,5 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import {addColor} from "../redux/actions";
 
 class AddColorForm extends React.Component {
 
@@ -8,13 +9,13 @@ class AddColorForm extends React.Component {
     }
 
     static propTypes = {
-        onNewColor: PropTypes.func.isRequired
+        store: PropTypes.object.isRequired
     };
 
     submit = (e) => {
         const {_title, _color} = this.refs;
         e.preventDefault();
-        this.props.onNewColor(_title.value, _color.value);
+        this.props.store.dispatch(addColor(_title.value, _color.value));
         _title.value = '';
         _color.value = '#000000';
         _title.focus();
