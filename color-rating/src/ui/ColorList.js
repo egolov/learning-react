@@ -31,18 +31,17 @@ class Color extends React.Component {
     }
 
     render() {
-        const { id, title, rating, color  } = this.props
-        const { store } = this.context;
+        const { id, title, rating, color, onRate, onRemove } = this.props;
         return (
             <section className="color" style={this.style}>
                 <h1 ref="title">{title}</h1>
-                <button onClick={() => store.dispatch(removeColor(id))}>X</button>
+                <button onClick={() => onRemove(id)}>X</button>
                 <div className="color"
                      style={{ backgroundColor: color }}>
                     {title}
                 </div>
                 <div>
-                    <StarRating starsSelected={rating} totalStars={5} onRate={rating => store.dispatch(rateColor(id, rating))}/>
+                    <StarRating starsSelected={rating} totalStars={5} onRate={rating => onRate(id, rating)}/>
                 </div>
             </section>
         );
@@ -52,11 +51,9 @@ class Color extends React.Component {
 Color.propTypes = {
     title: PropTypes.string.isRequired,
     color: PropTypes.string.isRequired,
-    rating: PropTypes.number.isRequired
-};
-
-Color.contextTypes = {
-    store: PropTypes.object
+    rating: PropTypes.number.isRequired,
+    onRemove: PropTypes.func.isRequired,
+    onRate: PropTypes.func.isRequired
 };
 
 Color.defaultProps = {
@@ -66,7 +63,7 @@ Color.defaultProps = {
     onRate: f=>f
 };
 
-const ColorList = ({ colors }) => {
+const ColorList = ({ colors, onRemove, onRate }) => {
     return (
         <div className="color-list">
             {(colors.length === 0) ?
@@ -74,6 +71,8 @@ const ColorList = ({ colors }) => {
                 colors.map(color =>
                     <Color key={color.id}
                            {...color}
+                           onRate={onRate}
+                           onRemove={onRemove}
                     />
                 )
             }
@@ -81,12 +80,10 @@ const ColorList = ({ colors }) => {
     );
 };
 
-ColorList.contextTypes = {
-    store: PropTypes.object
-};
-
 ColorList.propTypes = {
-    colors: PropTypes.array.isRequired
+    colors: PropTypes.array.isRequired,
+    onRemove: PropTypes.func.isRequired,
+    onRate: PropTypes.func.isRequired
 };
 
 export default ColorList
