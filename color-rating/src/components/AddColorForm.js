@@ -8,14 +8,14 @@ class AddColorForm extends React.Component {
         super(props);
     }
 
-    static propTypes = {
-        store: PropTypes.object.isRequired
+    static contextTypes = {
+        store: PropTypes.object
     };
 
     submit = (e) => {
         const {_title, _color} = this.refs;
         e.preventDefault();
-        this.props.store.dispatch(addColor(_title.value, _color.value));
+        this.context.store.dispatch(addColor(_title.value, _color.value));
         _title.value = '';
         _color.value = '#000000';
         _title.focus();

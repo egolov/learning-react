@@ -12,7 +12,5 @@ const render = () => {
     );
 };
 
-store.subscribe(render);
-store.subscribe(() => console.log('from subscriber'));
 render();
 
