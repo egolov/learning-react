@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import StarRating from './StarRating'
-import {rateColor, removeColor} from "../redux/actions";
+import {rateColor, removeColor} from "../../redux/actions";
 
 class Color extends React.Component {
 
